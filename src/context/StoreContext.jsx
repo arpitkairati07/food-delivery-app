@@ -25,11 +25,16 @@ const StoreContextProvider = (props) => {
     }
   };
 
-  // Log cart items whenever they change
-  useEffect(() => {
-    console.log("Cart Items Updated:", cartItems);
-  }, [cartItems]);
-
+  const getTotalCartAmount = () =>{
+    let totalAmount=0;
+    for(const item in cartItems){
+      if(cartItems[item]>0){
+        let itemInfo=food_list.find((product)=>product._id === item);
+        totalAmount += itemInfo.price * cartItems[item];
+      }
+    }
+    return totalAmount;
+    }
   // Context value to be provided to all components
   const contextValue = {
     food_list,
@@ -37,6 +42,7 @@ const StoreContextProvider = (props) => {
     setCartItems,
     addToCart,
     removeFromCart,
+    getTotalCartAmount
   };
 
   return (
