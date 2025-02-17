@@ -1,11 +1,12 @@
 import express from 'express'
 import cors from 'cors'
+import dotenv from 'dotenv';
 import { connectDB } from './config/db.js'
 
-
+dotenv.config();
 // App config
 const app= express()
-const port=5000
+const PORT = process.env.PORT || 5000;
 
 //middleware
 app.use(express.json())
@@ -19,9 +20,6 @@ app.get("/",(req,res)=>{
     res.send("API WORKING")
 })
 
-app.listen(port,()=>{
-    console.log(`Server started on localhost:${port}`)
+app.listen(PORT,()=>{
+    console.log(`Server started on localhost:${PORT}`)
 })
-
-
-//mongodb+srv://arpitkairati2002:food_delivery@1234@cluster0.m9mbs.mongodb.net/?
