@@ -19,5 +19,6 @@ const foodRouter = express.Router();
 // Define the route after the upload is initialized
 foodRouter.post("/add", upload.single("image"), addFood);
 foodRouter.get("/list",listFood)
+foodRouter.post("/remove",removeFood);
 
 export default foodRouter;
