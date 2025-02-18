@@ -1,3 +1,4 @@
+import { data } from "react-router-dom";
 import foodModel from "../models/foodModel.js";
 import fs from 'fs'
 
@@ -23,4 +24,16 @@ try {
     res.json({success:false,message:"Error adding food item"})
 }
 }
-export {addFood}
+
+// all FoodList 
+const listFood = async (req,res) =>{
+    try {
+        const foods=await foodModel.find({});
+        res.json({success:true,data:foods})
+    } catch (error) {
+        console.log(error);
+        res.json({success:false,message:"Error fetching food list"})
+    }
+}
+
+export {addFood,listFood}
