@@ -51,4 +51,9 @@ const listFood = async (req, res) => {
     }
 };
 
-export { addFood, listFood };
+
+// remove food items
+const removeFood = async (req,res) =>{
+
+}
+export { addFood, listFood, removeFood};
