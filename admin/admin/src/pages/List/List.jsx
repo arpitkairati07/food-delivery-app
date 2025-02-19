@@ -17,15 +17,31 @@ const List = () => {
     }
   }
 
-  const removeFood = async(foodId) =>{
-    const response =await axios.delete(`${url}/api/food/remove/${foodId}`);
-    if(response.data.success){
-      toast.success("Food Removed Successfully");
-      await fetchList();
-    }else{
-      toast.error("Error")
+  const removeFood = async (foodId) => {
+    console.log("Deleting Food ID:", foodId);
+  
+    if (!foodId) {
+      toast.error("Invalid Food ID");
+      return;
     }
-  }
+  
+    try {
+      const response = await axios.delete(`${url}/api/food/remove/${foodId}`); // ✅ Pass ID in URL
+      console.log("Response:", response);
+  
+      if (response.data.success) {
+        toast.success("Food Removed Successfully");
+        await fetchList();
+      } else {
+        toast.error("Error");
+      }
+    } catch (error) {
+      console.error("Delete Error:", error.response);
+      toast.error("Failed to delete food item");
+    }
+  };
+  
+  
   useEffect (()=>{
     fetchList();
   },[])
@@ -49,7 +65,13 @@ const List = () => {
               <p>{item.name}</p>
               <p>{item.category}</p>
               <p>${item.price}</p>
-              <p className='cursor' onClick={()=>removeFood(item._id)}>X</p>
+              <p className='cursor' onClick={() => {
+  console.log("Clicked ID:", item._id);  // Debugging step
+  removeFood(item._id);
+}}>
+  X
+</p>
+
             </div>
           )
         })}
