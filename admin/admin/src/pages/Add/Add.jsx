@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import './Add.css'
 import axios from 'axios'
 import { assets } from '../../assets/assets'
+import { toast } from 'react-toastify'
 
 const Add = () => {
 
@@ -39,8 +40,9 @@ const Add = () => {
                 }
             )
             setImage(false);
+            toast.success("Product Added Successfully");
         }else{
-            console.log(error)
+           toast.error(response.data.message);
         }
     }
   return (
