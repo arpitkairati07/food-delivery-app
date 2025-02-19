@@ -9,9 +9,19 @@ const List = () => {
   const[list,setList]=useState([]);
   const fetchList = async() =>{
     const response =await axios.get(`${url}/api/food/list`);
-    console.log(response.data)
+    // console.log(response.data)
     if(response.data.success){
       setList(response.data.data);
+    }else{
+      toast.error("Error")
+    }
+  }
+
+  const removeFood = async(foodId) =>{
+    const response =await axios.delete(`${url}/api/food/remove/${foodId}`);
+    if(response.data.success){
+      toast.success("Food Removed Successfully");
+      await fetchList();
     }else{
       toast.error("Error")
     }
@@ -19,6 +29,8 @@ const List = () => {
   useEffect (()=>{
     fetchList();
   },[])
+
+
   return (
     <div className='list add flex-col'>
       <p>All Food List</p>
@@ -37,7 +49,7 @@ const List = () => {
               <p>{item.name}</p>
               <p>{item.category}</p>
               <p>${item.price}</p>
-              <p>X</p>
+              <p className='cursor' onClick={()=>removeFood(item._id)}>X</p>
             </div>
           )
         })}
