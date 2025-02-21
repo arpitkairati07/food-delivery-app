@@ -37,6 +37,12 @@ const StoreContextProvider = (props) => {
     }
     return totalAmount;
     }
+
+    useEffect(()=>{
+      if(localStorage.getItem("token")){
+        setToken(localStorage.getItem("token"));
+      }
+    },[])
   // Context value to be provided to all components
   const contextValue = {
     food_list,
