@@ -8,7 +8,7 @@ const Navbar = ({setShowLogin}) => {
 
   const[menu,setMenu] =useState("home");
 
-  const {getTotalCartAmount} =useContext(StoreContext);
+  const {getTotalCartAmount, token ,setToken} =useContext(StoreContext);
   return (
     <div className='navbar'>
         <Link to='/'><img src={assets.logo} alt="" className="logo" /></Link>
@@ -22,9 +22,18 @@ const Navbar = ({setShowLogin}) => {
             <img src={assets.search_icon} alt="Search Icon" srcset="" />
             <div className="navbar-search-icon">
                 <Link to='/cart' ><img src={assets.basket_icon} alt="Basket Icon" srcset="" /></Link>
-                <div className={getTotalCartAmount()?"":"dot"}></div>
+                <div className={getTotalCartAmount() === 0?"":"dot"}></div>
             </div>
-            <button onClick={()=>setShowLogin(true)} className="login-btn">Sign In</button>
+            {!token ? <button onClick={()=>setShowLogin(true)} className="login-btn">Sign In</button>
+            : <div className='navbar-profile'>
+                <img src={assets.profile_icon} alt="Profile Icon" srcset="" />
+                <ul className="nav-profile-dropdown">
+                  <li><img src={assets.bag_icon} alt="" /><p>Orders</p></li>
+                  <hr />
+                  <li><img src={assets.logout_icon} alt="LogOut-Icon" /><p>LogOut</p></li>
+                </ul>
+              </div>}
+            
         </div>
     </div>
   )
