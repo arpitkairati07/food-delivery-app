@@ -11,22 +11,39 @@ const StoreContextProvider = (props) => {
   const [food_list, setFoodList] = useState([]);
 
   // Add an item to the cart
-  const addToCart = (itemId) => {
+  const addToCart = async (itemId) => {
     setCartItems((prev) => ({
-      ...prev,
-      [itemId]: (prev[itemId] || 0) + 1,
-    }));
-  };
-
-  // Remove an item from the cart
-  const removeFromCart = (itemId) => {
-    if (cartItems[itemId] > 0) {
-      setCartItems((prev) => ({
         ...prev,
-        [itemId]: prev[itemId] - 1,
-      }));
+        [itemId]: (prev[itemId] || 0) + 1,
+    }));
+
+    if (token) { 
+        try {
+            await axios.post(url + "/api/cart/add", { itemId }, { headers: { token } });
+        } catch (error) {
+            console.error("Error adding to cart:", error);
+        }
     }
-  };
+};
+
+
+const removeFromCart = async (itemId) => {
+  if (cartItems[itemId] > 0) {
+      setCartItems((prev) => ({
+          ...prev,
+          [itemId]: prev[itemId] - 1,
+      }));
+
+      if (token) { 
+          try {
+              await axios.post(url + "/api/cart/remove", { itemId }, { headers: { token } });
+          } catch (error) {
+              console.error("Error removing from cart:", error);
+          }
+      }
+  }
+};
+
 
   const getTotalCartAmount = () => {
     let totalAmount = 0;
