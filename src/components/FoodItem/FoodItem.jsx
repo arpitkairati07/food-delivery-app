@@ -3,6 +3,7 @@ import React, { useContext } from "react";
 import "./FoodItem.css";
 import { assets } from "../../assets/assets";
 import { StoreContext } from "../../context/StoreContext";
+import axios from 'axios'
 
 const FoodItem = ({ _id, name, description, price, image }) => {
   const { cartItems, addToCart, removeFromCart, url } = useContext(StoreContext);
