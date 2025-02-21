@@ -5,7 +5,7 @@ import { assets } from "../../assets/assets";
 import { StoreContext } from "../../context/StoreContext";
 
 const FoodItem = ({ _id, name, description, price, image }) => {
-  const { cartItems, addToCart, removeFromCart } = useContext(StoreContext);
+  const { cartItems, addToCart, removeFromCart, url } = useContext(StoreContext);
 
   console.log("Rendering FoodItem with ID:", _id); // Debugging line
   console.log("Cart Items:", cartItems); // Debugging line
@@ -13,7 +13,7 @@ const FoodItem = ({ _id, name, description, price, image }) => {
   return (
     <div className="food-item">
       <div className="food-item-img-container">
-        <img className="food-item-image" src={image} alt={name} />
+        <img className="food-item-image" src={url+"/images/"+image} alt={name} />
         {!cartItems[_id] ? (
           <img
             className="add"
