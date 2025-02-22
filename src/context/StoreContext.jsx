@@ -68,12 +68,18 @@ const removeFromCart = async (itemId) => {
     }
   };
 
+const loadCartData = async(token) =>{
+const response = await axios.post(url+"/api/cart/get",{},{headers:{token}})
+setCartItems(response.data.cartData)
+}
+
   useEffect(() => {
     async function loadData() {
       await fetchFoodList();
       const storedToken = localStorage.getItem("token");
       if (storedToken) {
         setToken(storedToken);
+        await loadCartData(localStorage.getItem("token"))
       }
     }
     loadData();
