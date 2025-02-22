@@ -1,9 +1,21 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import './PlaceOrder.css'
 import { StoreContext } from '../../context/StoreContext'
 const PlaceOrder = () => {
 
-  const {getTotalCartAmount}=useContext(StoreContext);
+  const {getTotalCartAmount, token, food_list, cartItems, url}=useContext(StoreContext);
+
+  const[data,setData]=useState({
+    firstName:"",
+    lastName:"",
+    email:"",
+    street:"",
+    city:"",
+    state:"",
+    zipCode:"",
+    country:"",
+    phone:"",
+  })
   return (
     <div className='place-order'>
       <div className="place-order-left">
