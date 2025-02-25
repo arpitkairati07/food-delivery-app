@@ -29,7 +29,6 @@ const Orders = ({ url }) => {
       status:event.target.value,
     })
     if(response.data.success){
-      await fetchAllOrder()
       toast.success(response.data.message);
     }
     else{
