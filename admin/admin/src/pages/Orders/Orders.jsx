@@ -23,19 +23,30 @@ const Orders = ({ url }) => {
     }
   };
 
-  const statusHandler = async(event,orderId) =>{
-    const response = await axios.post(url +"/api/order/status",{
-      orderId,
-      status:event.target.value,
-    })
-    if(response.data.success){
-      toast.success(response.data.message);
-    }
-    else{
-      toast.error(response.data.message);
-    })
-  }
+  const statusHandler = async (event, orderId) => {
+    try {
+      const newStatus = event.target.value;
+      const response = await axios.post(url + "/api/order/status", {
+        orderId,
+        status: newStatus,
+      });
 
+      if (response.data.success) {
+        toast.success(response.data.message);
+        // Update the order's status locally without refetching
+        setOrders((prevOrders) =>
+          prevOrders.map((order) =>
+            order._id === orderId ? { ...order, status: newStatus } : order
+          )
+        );
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      toast.error("Failed to update order status");
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
     fetchAllOrder();
@@ -56,16 +67,24 @@ const Orders = ({ url }) => {
                     : `${item.name} x ${item.quantity}, `
                 )}
               </p>
-              <p className='order-item-name'>{order.address.firstName+" "+order.address.lastName}</p>
+              <p className='order-item-name'>
+                {order.address.firstName} {order.address.lastName}
+              </p>
               <div className="order-item-address">
-                <p>{order.address.street+" ,"}</p>
-                <p>{order.address.city+" ,"+order.address.state+" ,"+order.address.country+" ,"+order.address.zipcode+" ,"}</p>
+                <p>{order.address.street}</p>
+                <p>
+                  {order.address.city}, {order.address.state}, {order.address.country}, {order.address.zipcode}
+                </p>
               </div>
               <p className="order-item-phone">{order.address.phone}</p>
             </div>
-            <p>Items : {order.items.length}</p>
-            <p>Total Amount : ${order.amount}</p>
-            <select onChange={(event)=>statusHandler(event,order._id)} value={order.status} className='order-item-select'>
+            <p>Items: {order.items.length}</p>
+            <p>Total Amount: ${order.amount}</p>
+            <select
+              onChange={(event) => statusHandler(event, order._id)}
+              value={order.status || "Food Processing"} // Ensuring a valid default value
+              className='order-item-select'
+            >
               <option value="Food Processing">Food Processing</option>
               <option value="Out for Delivery">Out for Delivery</option>
               <option value="Delivered">Delivered</option>
