@@ -92,4 +92,17 @@ const listOrders = async(req,res) =>{
         res.json({success:false,message:"Error"});
     }
 }
-export { placeOrder,verifyOrder,userOrder, listOrders };
+
+// API for Updating Order Status by Admin
+const updateStatus = async (req, res) => {
+    try {
+        const { orderId, status } = req.body;
+        await orderModel.findByIdAndUpdate(orderId, { status });
+        res.json({ success: true, message: "Status updated successfully" });
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: "Error" });
+    }
+}
+
+export { placeOrder,verifyOrder,userOrder, listOrders,updateStatus };
